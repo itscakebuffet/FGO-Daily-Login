@@ -2,9 +2,9 @@ name: FGO Login System
 
 on:
   push:
-    branches: [master]
+    branches: [NA]
   pull_request:
-    branches: [master]
+    branches: [NA]
   schedule:
     - cron: "30 10 * * *"
   workflow_dispatch:
@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Install Requeriments
-        run: pip install -r https://raw.githubusercontent.com/O-Isaac/FGO-Daily-Login/master/requirements.txt
+        run: pip install -r https://raw.githubusercontent.com/itscakebuffet/FGO-Daily-Login/NA/requirements.txt
 
       - name: Gettings files from Repo
         uses: actions/checkout@v2
@@ -27,9 +27,9 @@ jobs:
         run: |
           python3 main.py
         env:
-          userIds: ${{ secrets.GAME_USERIDS }}
-          authKeys: ${{ secrets.GAME_AUTHKEYS }}
-          secretKeys: ${{ secrets.GAME_SECRETKEYS }}
+          userIds: ${{ secrets.NA_GAME_USERIDS }}
+          authKeys: ${{ secrets.NA_GAME_AUTHKEYS }}
+          secretKeys: ${{ secrets.NA_GAME_SECRETKEYS }}
           UserAgent: ${{ secrets.GAME_USERAGENT }}
-          fateRegion: ${{ secrets.GAME_REGION }}
+          fateRegion: ${{ secrets.NA_GAME_REGION }}
           webhookDiscord: ${{ secrets.DISCORD_WEBHOOK }}
