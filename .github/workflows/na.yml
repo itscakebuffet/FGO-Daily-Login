@@ -2,9 +2,9 @@ name: FGO Login System NA
 
 on:
   push:
-    branches: [NA]
+    branches: [master]
   pull_request:
-    branches: [NA]
+    branches: [master]
   schedule:
     - cron: "30 11 * * *"
   workflow_dispatch:
@@ -22,8 +22,6 @@ jobs:
 
       - name: Get Files From Repo
         uses: actions/checkout@v2
-        with:
-          ref: NA
 
       - name: Execute main script
         run: |
