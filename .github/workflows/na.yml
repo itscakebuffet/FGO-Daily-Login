@@ -17,10 +17,10 @@ jobs:
         python-version: [3.8]
 
     steps:
-      - name: Install Requeriments
+      - name: Install Requirements
         run: pip install -r https://raw.githubusercontent.com/itscakebuffet/FGO-Daily-Login/NA/requirements.txt
 
-      - name: Gettings files from Repo
+      - name: Get Files From Repo
         uses: actions/checkout@v2
         with:
           ref: NA
