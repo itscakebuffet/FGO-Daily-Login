@@ -1,4 +1,4 @@
-name: FGO Login System
+name: FGO Login System JP
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Install Requeriments
-        run: pip install -r https://raw.githubusercontent.com/O-Isaac/FGO-Daily-Login/master/requirements.txt
+        run: pip install -r https://raw.githubusercontent.com/itscakebuffet/FGO-Daily-Login/JP/requirements.txt
 
       - name: Gettings files from Repo
         uses: actions/checkout@v2
