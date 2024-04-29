@@ -61,12 +61,10 @@ def get_folder_data(assetbundle):
 
 
 httpheader = {
-    'Accept-Encoding': 'gzip, identity',
+    'Accept-Encoding': 'deflate, gzip',
     'User-Agent': user_agent_,
     'Content-Type': 'application/x-www-form-urlencoded',
-    'Connection': 'Keep-Alive, TE',
     'X-Unity-Version': '2020.3.34f1',
-    'TE': 'identity',
 }
 
 
