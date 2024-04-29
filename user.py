@@ -117,6 +117,7 @@ class user:
 
         self.builder_.AddParameter(
             'assetbundleFolder', fgourl.asset_bundle_folder_)
+        self. builder_. AddParameter('deviceInfo', 'Google Pixel 5 / Android OS 14 / API-34 (UP1A.231105.001/10817346)')
         self.builder_.AddParameter('isTerminalLogin', '1')
         self.builder_.AddParameter('userState', str(userState))
 
