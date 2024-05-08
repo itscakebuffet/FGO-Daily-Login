@@ -72,16 +72,16 @@ def main():
                 #instance.lq002()
                 time.sleep(2)
 
-                check_blue_apple_cron(instance)
-                logger.info('尝试购买蓝苹果!')
-                try:
-                   instance.buyBlueApple(1)
-                   time.sleep(2)
-                   for _ in range(3): 
-                      instance.buyBlueApple(1)
-                      time.sleep(2)
-                except Exception as ex:
-                    logger.error(ex)
+                # check_blue_apple_cron(instance)
+                # logger.info('尝试购买蓝苹果!')
+                # try:
+                #    instance.buyBlueApple(1)
+                #    time.sleep(2)
+                #    for _ in range(3): 
+                #       instance.buyBlueApple(1)
+                #       time.sleep(2)
+                # except Exception as ex:
+                #     logger.error(ex)
                     
             except Exception as ex:
                 logger.error(ex)
