@@ -4,6 +4,7 @@ import requests
 import version
 import main
 import CatAndMouseGame
+import os
 
 requests.urllib3.disable_warnings()
 session = requests.Session()
@@ -19,8 +20,6 @@ data_server_folder_crc_ = 0
 server_addr_ = 'https://game.fate-go.jp'
 github_token_ = ''
 github_name_ = ''
-user_agent_ = 'Dalvik/2.1.0 (Linux; U; Android 14; Pixel 5 Build/UP1A.231105.001)'
-
 
 # ==== User Info ====
 def set_latest_assets():
@@ -59,11 +58,12 @@ def get_folder_data(assetbundle):
 
 # ===== End =====
 
+user_agent = os.environ.get('USER_AGENT_SECRET')
 
 httpheader = {
     'Accept-Encoding': 'deflate, gzip',
     'Content-Type': 'application/x-www-form-urlencoded',
-    'User-Agent': user_agent_,
+    'User-Agent': user_agent,
     'X-Unity-Version': '2020.3.34f1',
 }
 

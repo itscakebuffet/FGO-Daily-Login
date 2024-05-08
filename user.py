@@ -1,4 +1,5 @@
 # coding: utf-8
+import msgpack
 import uuid
 import hashlib
 import base64
@@ -7,6 +8,15 @@ import mytime
 import gacha
 import webhook
 import main
+import logging
+import json
+import os
+import subprocess
+import re
+import sys
+import binascii
+import random
+import time
 
 from urllib.parse import quote_plus
 from libs.GetSubGachaId import GetGachaSubIdFP
@@ -27,6 +37,10 @@ class ParameterBuilder:
             ('userId', self.uid_),
             ('verCode', fgourl.ver_code_),
         ]
+
+        idempotency_key = os.environ.get('IDEMPOTENCY_KEY_SECRET')
+        idempotency_key_signature = os.environ.get('IDEMPOTENCY_KEY_SIGNATURE_SECRET')
+        last_access_time = os.environ.get('LAST_ACCESS_TIME_SECRET')
 
     def AddParameter(self, key: str, value: str):
         self.parameter_list_.append((key, value))
@@ -69,10 +83,18 @@ class ParameterBuilder:
 
 
 class Rewards:
-    def __init__(self, stone, level, ticket):
+    def __init__(self, stone, level, ticket, goldenfruit, silverfruit, bronzefruit, bluebronzesapling, bluebronzefruit, pureprism, sqf01, holygrail):
         self.stone = stone
         self.level = level
         self.ticket = ticket
+        self.goldenfruit = goldenfruit
+        self.silverfruit = silverfruit
+        self.bronzefruit = bronzefruit
+        self.bluebronzesapling = bluebronzesapling
+        self.bluebronzefruit = bluebronzefruit
+        self.pureprism = pureprism
+        self.sqf01 = sqf01
+        self.holygrail = holygrail
 
 
 class Login:
@@ -117,25 +139,78 @@ class user:
 
         self.builder_.AddParameter(
             'assetbundleFolder', fgourl.asset_bundle_folder_)
-        self. builder_. AddParameter('deviceInfo', 'Google Pixel 5 / Android OS 14 / API-34 (UP1A.231105.001/10817346)')
+        self.builder_.AddParameter('deviceInfo', 'Google Pixel 5 / Android OS 14 / API-34 (UP1A.231105.001/10817346)')
         self.builder_.AddParameter('isTerminalLogin', '1')
         self.builder_.AddParameter('userState', str(userState))
 
         data = self.Post(
             f'{fgourl.server_addr_}/login/top?_userId={self.user_id_}')
 
+        responses = data['response']
+
+        with open('login.json', 'w', encoding='utf-8') as file:
+            json.dump(data, file, ensure_ascii=False, indent=4)
+
         self.name_ = hashlib.md5(
             data['cache']['replaced']['userGame'][0]['name'].encode('utf-8')).hexdigest()
         stone = data['cache']['replaced']['userGame'][0]['stone']
         lv = data['cache']['replaced']['userGame'][0]['lv']
         ticket = 0
+        goldenfruit = 0
+        silverfruit = 0
+        bronzefruit = 0
+        bluebronzesapling = 0
+        bluebronzefruit = 0
+        pureprism = 0
+        sqf01 = 0
+        holygrail = 0
 
         for item in data['cache']['replaced']['userItem']:
             if item['itemId'] == 4001:
                 ticket = item['num']
                 break
 
-        rewards = Rewards(stone, lv, ticket)
+        for item in data['cache']['replaced']['userItem']:
+            if item['itemId'] == 100:
+                goldenfruit = item['num']
+                break
+
+        for item in data['cache']['replaced']['userItem']:
+            if item['itemId'] == 101:
+                silverfruit = item['num']
+                break
+
+        for item in data['cache']['replaced']['userItem']:
+            if item['itemId'] == 102:
+                bronzefruit = item['num']
+                break
+
+        for item in data['cache']['replaced']['userItem']:
+            if item['itemId'] == 103:
+                bluebronzesapling = item['num']
+                break
+
+        for item in data['cache']['replaced']['userItem']:
+            if item['itemId'] == 104:
+                bluebronzefruit = item['num']
+                break
+
+        for item in data['cache']['replaced']['userItem']:
+            if item['itemId'] == 46:
+                pureprism = item['num']
+                break
+
+        for item in data['cache']['replaced']['userItem']:
+            if item['itemId'] == 16:
+                sqf01 = item['num']
+                break
+
+        for item in data['cache']['replaced']['userItem']:
+            if item['itemId'] == 7999:
+                holygrail = item['num']
+                break
+
+        rewards = Rewards(stone, lv, ticket, goldenfruit, silverfruit, bronzefruit, bluebronzesapling, bluebronzefruit, pureprism, sqf01, holygrail)
 
         DataWebhook.append(rewards)
 
@@ -187,6 +262,35 @@ class user:
             DataWebhook.append("No Bonus")
 
         webhook.topLogin(DataWebhook)
+
+    def buyBlueApple(self, quantity=1):
+        # https://game.fate-go.jp/shop/purchase
+
+        if main.fate_region != "JP":
+            main.logger.error("Region not supported.")
+            return
+
+        self.builder_.AddParameter('id', '13000000')
+        self.builder_.AddParameter('num', str(quantity))
+
+        data = self.Post(f'{fgourl.server_addr_}/shop/purchase?_userId={self.user_id_}')
+        responses = data['response']
+
+        for response in responses:
+            resCode = response['resCode']
+            resSuccess = response['success']
+            nid = response["nid"]
+
+            if (resCode != "00"):
+                continue
+
+            if nid == "purchase":
+                if "purchaseName" in resSuccess and "purchaseNum" in resSuccess:
+                    purchaseName = resSuccess['purchaseName']
+                    purchaseNum = resSuccess['purchaseNum']
+
+                    main.logger.info(f"{purchaseNum}x {purchaseName} purchased!")
+                    webhook.shop(purchaseName, purchaseNum)
 
     def drawFP(self):
         self.builder_.AddParameter('storyAdjustIds', '[]')

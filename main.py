@@ -13,9 +13,17 @@ authKeys = os.environ['authKeys'].split(',')
 secretKeys = os.environ['secretKeys'].split(',')
 fate_region = os.environ['fateRegion']
 webhook_discord_url = os.environ['webhookDiscord']
+idempotency_key = os.environ.get('IDEMPOTENCY_KEY_SECRET')
+idempotency_key_signature = os.environ.get('IDEMPOTENCY_KEY_SIGNATURE_SECRET')
+last_access_time = os.environ.get('LAST_ACCESS_TIME_SECRET')
+auth_code1 = os.environ.get('AUTH_CODE_SECRET')
+device_info = os.environ.get('DEVICE_INFO_SECRET')
+user_state = os.environ.get('USER_STATE_SECRET')
+user_agent = os.environ.get('USER_AGENT_SECRET')
+
 UA = os.environ['UserAgent']
 
-if UA != 'nullvalue':
+if UA:
     fgourl.user_agent_ = UA
 
 userNums = len(userIds)
@@ -54,9 +62,6 @@ def main():
                 time.sleep(3)
                 instance.topHome()
                 time.sleep(3)
-                logger.info('Throw daily friend summon!')
-                instance.drawFP()
-                time.sleep(2)
             except Exception as ex:
                 logger.error(ex)
 
