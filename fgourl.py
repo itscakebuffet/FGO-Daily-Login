@@ -61,10 +61,11 @@ def get_folder_data(assetbundle):
 user_agent = os.environ.get('USER_AGENT_SECRET')
 
 httpheader = {
-    'Accept-Encoding': 'deflate, gzip',
-    'Content-Type': 'application/x-www-form-urlencoded',
     'User-Agent': user_agent,
-    'X-Unity-Version': '2020.3.34f1',
+    'Accept-Encoding': "deflate, gzip",
+    'Content-Type': "application/x-www-form-urlencoded",
+    'X-Unity-Version': "2020.3.34f1"
+
 }
 
 
