@@ -16,7 +16,8 @@ webhook_discord_url = os.environ['webhookDiscord']
 blue_apple_cron = os.environ.get("MAKE_BLUE_APPLE")
 idempotency_key_signature = os.environ.get('IDEMPOTENCY_KEY_SIGNATURE_SECRET')
 device_info = os.environ.get('DEVICE_INFO_SECRET')
-user_agent = os.environ.get('USER_AGENT_SECRET')
+user_agent_2 = os.environ.get('USER_AGENT_SECRET_2')
+
 
 userNums = len(userIds)
 authKeyNums = len(authKeys)
@@ -43,9 +44,9 @@ def get_latest_verCode():
     endpoint = ""
 
     if fate_region == "NA":
-        endpoint += "https://raw.githubusercontent.com/itscakebuffet/FGO-VerCode-extractor/NA/VerCode.json"
+        endpoint += "https://raw.githubusercontent.com/O-Isaac/FGO-VerCode-extractor/NA/VerCode.json"
     else:
-        endpoint += "https://raw.githubusercontent.com/itscakebuffet/FGO-VerCode-extractor/JP/VerCode.json"
+        endpoint += "https://raw.githubusercontent.com/DNNDHH/FGO-VerCode-extractor/JP/VerCode.json"
 
     response = requests.get(endpoint).text
     response_data = json.loads(response)
@@ -61,25 +62,19 @@ def main():
             try:
                 instance = user.user(userIds[i], authKeys[i], secretKeys[i])
                 time.sleep(3)
-                logger.info('Logging into account!')
+                logger.info('登录账号!')
                 instance.SignedData()
                 time.sleep(1)
                 instance.topLogin_s()
                 time.sleep(2)
                 instance.topHome()
                 time.sleep(2)
-                #instance.lq001()
-                #instance.lq002()
-                time.sleep(2)
-
-                check_blue_apple_cron(instance)
-                logger.info('尝试购买蓝苹果!')
                 try:
-                   instance.buyBlueApple(1)
                    time.sleep(2)
-                   for _ in range(3): 
-                      instance.buyBlueApple(1)
-                      time.sleep(2)
+                   logger.info('开始友情点召唤!!')
+                   for _ in range(1): #可定义每次登录时自动抽几次友情10连（默认1次） 
+                      instance.drawFP()
+                      time.sleep(4)
                 except Exception as ex:
                     logger.error(ex)
                     

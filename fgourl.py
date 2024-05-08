@@ -21,6 +21,7 @@ server_addr_ = 'https://game.fate-go.jp'
 github_token_ = ''
 github_name_ = ''
 
+
 # ==== User Info ====
 def set_latest_assets():
     global app_ver_, data_ver_, date_ver_, asset_bundle_folder_, data_server_folder_crc_, ver_code_, server_addr_
@@ -58,10 +59,10 @@ def get_folder_data(assetbundle):
 
 # ===== End =====
 
-user_agent = os.environ.get('USER_AGENT_SECRET')
+user_agent_2 = os.environ.get('USER_AGENT_SECRET_2')
 
 httpheader = {
-    'User-Agent': user_agent,
+    'User-Agent': user_agent_2,
     'Accept-Encoding': "deflate, gzip",
     'Content-Type': "application/x-www-form-urlencoded",
     'X-Unity-Version': "2020.3.34f1"
