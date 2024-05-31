@@ -2,9 +2,9 @@ name: FGO Login System JP
 
 on:
   push:
-    branches: [master]
+    branches: [JP]
   pull_request:
-    branches: [master]
+    branches: [JP]
   schedule:
     - cron: "45 19 * * *"
   workflow_dispatch:
