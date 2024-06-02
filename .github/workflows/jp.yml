@@ -17,11 +17,13 @@ jobs:
         python-version: [3.8]
 
     steps:
-      - name: Install Requeriments
-        run: pip install -r https://raw.githubusercontent.com/itscakebuffet/FGO-Daily-Login/master/requirements.txt
-
       - name: Gettings files from Repo
         uses: actions/checkout@v2
+        with:
+          ref: JP
+          
+      - name: Install Requeriments
+        run: pip install -r requirements.txt
 
       - name: Execute main script
         run: |
@@ -33,3 +35,6 @@ jobs:
           UserAgent: ${{ secrets.GAME_USERAGENT }}
           fateRegion: ${{ secrets.GAME_REGION }}
           webhookDiscord: ${{ secrets.DISCORD_WEBHOOK }}
+          IDEMPOTENCY_KEY_SIGNATURE_SECRET: ${{ secrets.IDEMPOTENCY_KEY_SIGNATURE_SECRET }}
+          DEVICE_INFO_SECRET: ${{ secrets.DEVICE_INFO_SECRET }}
+          USER_AGENT_SECRET: ${{ secrets.USER_AGENT_SECRET }}
