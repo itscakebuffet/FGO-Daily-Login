@@ -2,9 +2,9 @@ name: FGO Login System NA
 
 on:
   push:
-    branches: [master]
+    branches: [NA]
   pull_request:
-    branches: [master]
+    branches: [NA]
   schedule:
     - cron: "30 11 * * *"
   workflow_dispatch:
@@ -20,7 +20,7 @@ jobs:
       - name: Gettings files from Repo
         uses: actions/checkout@v2
         with:
-          ref: master
+          ref: NA
           
       - name: Install Requeriments
         run: pip install -r requirements.txt

@@ -1,6 +1,7 @@
 import main
 import requests
 import user
+import json
 
 
 def topLogin(data: list) -> None:
@@ -9,7 +10,12 @@ def topLogin(data: list) -> None:
     rewards: user.Rewards = data[0]
     login: user.Login = data[1]
     bonus: user.Bonus or str = data[2]
+    with open('login.json', 'r', encoding='utf-8')as f:
+        data22 = json.load(f)
 
+        name1 = data22['cache']['replaced']['userGame'][0]['name']
+        fpids1 = data22['cache']['replaced']['userGame'][0]['friendCode']
+    
     messageBonus = ''
     nl = '\n'
 
@@ -31,47 +37,130 @@ def topLogin(data: list) -> None:
                 "fields": [
                     {
                         "name": "Level",
+                        "value": f"{name1}",
+                        "inline": True
+                    },
+                    {
+                        "name": "FPID",
+                        "value": f"{fpids1}",
+                        "inline": True
+                    },
+                    {
+                        "name": "等级",
                         "value": f"{rewards.level}",
                         "inline": True
                     },
                     {
-                        "name": "Tickets",
+                        "name": "呼符", 
                         "value": f"{rewards.ticket}",
                         "inline": True
-                    },
+                    },                    
                     {
-                        "name": "Saint Quartz",
+                        "name": "圣晶石",
                         "value": f"{rewards.stone}",
                         "inline": True
                     },
                     {
-                        "name": "Login Days",
+                        "name": "圣晶片",
+                        "value": f"{rewards.sqf01}",
+                        "inline": True
+                    },
+                    {
+                        "name": "金苹果",
+                        "value": f"{rewards.goldenfruit}",
+                        "inline": True
+                    },
+                    {
+                        "name": "银苹果",
+                        "value": f"{rewards.silverfruit}",
+                        "inline": True
+                    },
+                    {
+                        "name": "铜苹果",
+                        "value": f"{rewards.bronzefruit}",
+                        "inline": True
+                    },
+                    {
+                        "name": "蓝苹果",
+                        "value": f"{rewards.bluebronzefruit}",
+                        "inline": True
+                    },
+                    {
+                        "name": "蓝苹果树苗",
+                        "value": f"{rewards.bluebronzesapling}",
+                        "inline": True
+                    },
+                    {
+                        "name": "连续登录天数",
                         "value": f"{login.login_days}",
                         "inline": True
                     },
                     {
-                        "name": "Total Days",
+                        "name": "累计登录天数",
                         "value": f"{login.total_days}",
                         "inline": True
                     },
                     {
-                        "name": "Total Friend Points",
+                        "name": "白方块",
+                        "value": f"{rewards.pureprism}",
+                        "inline": True
+                    },
+                    {
+                        "name": "友情点",
                         "value": f"{login.total_fp}",
                         "inline": True
                     },
                     {
-                        "name": "Friend Points",
+                        "name": "今天 获得的友情点",
                         "value": f"+{login.add_fp}",
                         "inline": True
                     },
                     {
-                        "name": "Ap Max",
-                        "value": f"{login.act_max}",
+                        "name": "当前AP",
+                        "value": f"{login.remaining_ap}",
                         "inline": True
-                    }
+                    },
+                    {
+                        "name": "圣杯",
+                        "value": f"{rewards.holygrail}",
+                        "inline": True
+                    },
+                    
                 ],
                 "thumbnail": {
                     "url": "https://grandorder.wiki/images/thumb/3/3d/Icon_Item_Saint_Quartz.png/200px-Icon_Item_Saint_Quartz.png"
+                }
+            }
+        ],
+        "attachments": []
+    }
+
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    requests.post(endpoint, json=jsonData, headers=headers)
+
+
+def shop(item: str, quantity: str) -> None:
+    endpoint = main.webhook_discord_url
+    
+    jsonData = {
+        "content": None,
+        "embeds": [
+            {
+                "title": "FGO自动购物系统 - " + main.fate_region,
+                "description": f"购买成功.",
+                "color": 5814783,
+                "fields": [
+                    {
+                        "name": f"商店",
+                        "value": f"消费 {40 * quantity}Ap 购买 {quantity}x {item}",
+                        "inline": False
+                    }
+                ],
+                "thumbnail": {
+                    "url": "https://www.fate-go.jp/manga_fgo2/images/commnet_chara10.png"
                 }
             }
         ],
@@ -90,10 +179,10 @@ def drawFP(servants, missions) -> None:
 
     message_mission = ""
     message_servant = ""
-
+    
     if (len(servants) > 0):
         servants_atlas = requests.get(
-            f"https://api.atlasacademy.io/export/JP/basic_svt_lang_en.json").json()
+            f"https://api.atlasacademy.io/export/JP/basic_svt.json").json()
 
         svt_dict = {svt["id"]: svt for svt in servants_atlas}
 
@@ -114,7 +203,7 @@ def drawFP(servants, missions) -> None:
                 "color": 5750876,
                 "fields": [
                     {
-                        "name": "Gacha Result",
+                        "name": "友情卡池",
                         "value": f"{message_servant}",
                         "inline": False
                     }
