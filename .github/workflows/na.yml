@@ -20,7 +20,7 @@ jobs:
       - name: Gettings files from Repo
         uses: actions/checkout@v2
         with:
-          ref: NA
+          ref: master
           
       - name: Install Requeriments
         run: pip install -r requirements.txt
