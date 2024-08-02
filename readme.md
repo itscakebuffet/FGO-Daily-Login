@@ -7,7 +7,7 @@ It has the following features:
 - No Logs
 - Automatic VerCode Update
 - Change Telegram to Discord Webhook
-- Region JP and NA 
+- Region JP
 
 # Extract your auth data
 You need to extract your authentication data to do this.
@@ -15,7 +15,6 @@ It's simple, all you need to do is navigate to the following path and get the fo
 
 | Region | Path | File |
 | --- | --- | --- | 
-| NA | `android/data/com.aniplex.fategrandorder.en/files/data/` | 54cc790bf952ea710ed7e8be08049531 |
 | JP | `android/data/com.aniplex.fategrandorder/files/data/` | 54cc790bf952ea710ed7e8be08049531 |
 
 # Decript your data
@@ -36,7 +35,6 @@ you should configure all cron after update of VerCode Extractor Repository!
 
 | Region | Update VerCode Extractor Repository     | Login in FGO Daily Repository       |
 |--------|-------------|-------------|
-| NA     | 15 10 * * * | 30 10 * * * |
 | JP     | 15 19 * * * | 30 19 * * * |
 
 Is not necesary fork the repo of verCode but if you want
@@ -50,13 +48,8 @@ Add this enviroment variables into `Repository > settings > secrets > actions`
 | GAME_SECRETKEYS | RaNdOmStRiNg1234:randomAAAAA=,RaNdOmStRiNg1235:randomAAAAA= |
 | GAME_USERAGENT | Dalvik/2.1.0 (Linux; U; Android 11; Pixel 5 Build/RD1A.201105.003.A1) or Your User Agent |
 | GAME_USERIDS | 60951234,60951235 |
-| GAME_REGION | NA or JP (Must be in upper case) |
+| GAME_REGION | JP (Must be in upper case) |
 | DISCORD_WEBHOOK | https://discord.com/api/webhooks/randomNumber/randomString |
-
-# Road Map
-- [x] Perform Daily Friend Point Summons
-- [ ] Claim all Saint Quartz and Tickets from gif box 
-- [ ] Make blue apple automatic
 
 # Acknowledgments 
 - [hexstr](https://github.com/hexstr) author of FGO Daily Bonus
