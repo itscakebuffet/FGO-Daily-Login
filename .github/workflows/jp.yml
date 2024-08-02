@@ -2,9 +2,9 @@ name: FGO Login System JP
 
 on:
   push:
-    branches: [JP]
+    branches: [master]
   pull_request:
-    branches: [JP]
+    branches: [master]
   schedule:
     - cron: "45 19 * * *"
   workflow_dispatch:
@@ -20,7 +20,7 @@ jobs:
       - name: Gettings files from Repo
         uses: actions/checkout@v2
         with:
-          ref: JP
+          ref: master
           
       - name: Install Requeriments
         run: pip install -r requirements.txt
@@ -35,9 +35,7 @@ jobs:
           userIds: ${{ secrets.GAME_USERIDS }}
           authKeys: ${{ secrets.GAME_AUTHKEYS }}
           secretKeys: ${{ secrets.GAME_SECRETKEYS }}
-          UserAgent: ${{ secrets.GAME_USERAGENT }}
           fateRegion: ${{ secrets.GAME_REGION }}
           webhookDiscord: ${{ secrets.DISCORD_WEBHOOK }}
-          IDEMPOTENCY_KEY_SIGNATURE_SECRET: ${{ secrets.IDEMPOTENCY_KEY_SIGNATURE_SECRET }}
           DEVICE_INFO_SECRET: ${{ secrets.DEVICE_INFO_SECRET }}
           USER_AGENT_SECRET: ${{ secrets.USER_AGENT_SECRET }}
